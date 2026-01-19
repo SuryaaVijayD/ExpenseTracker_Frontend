@@ -1,6 +1,6 @@
 // api/Auth.ts
 
-const BASE_URL = 'http://10.165.154.89:8080';
+const BASE_URL = 'https://expensetracker-backend-5dac.onrender.com';
 
 export interface RegisterPayload {
   email: string;
