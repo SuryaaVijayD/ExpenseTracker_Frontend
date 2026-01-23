@@ -4,7 +4,7 @@ import { Text, View } from 'react-native'
 const recentrans = () => {
   return (
     <View>
-        <Text className='text-text-primary font-p'>No Recent Transcation</Text>
+        <Text className='text-text-primary2 font-nunito'>No Recent Transcation</Text>
     </View>
   )
 }

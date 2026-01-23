@@ -48,7 +48,7 @@ const Login = () => {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-[#1A1A1A]">
+    <SafeAreaView className="flex-1 bg-bg-main">
       <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior={Platform.OS === 'ios' ? 'padding' : 'padding'}
@@ -65,22 +65,22 @@ const Login = () => {
           showsVerticalScrollIndicator={false}
         >
 
-          <Text className="text-white font-p text-3xl italic mb-10">
-            E<Text className="text-blue-500 font-pbold">T</Text>
+          <Text className="text-text-primary font-nunito text-3xl italic mb-10">
+            E<Text className="text-text-secondary2 font-nunitoBold">T</Text>
           </Text>
 
           <View className="flex-1 justify-center">
-            <Text className="text-white font-pbold text-6xl mb-4">
+            <Text className="text-text-primary font-nunitoBold text-6xl mb-4">
               Hey, {'\n'}
-              Login <Text className="text-blue-400">now</Text>
+              Login <Text className="text-text-secondary2 font-nunitoBold">now</Text>
             </Text>
 
             <View className="flex-row items-center mb-8">
-              <Text className="text-gray-400 font-p text-xl">
+              <Text className="text-text-secondary font-nunito text-xl">
                 If you are new?{' '}
               </Text>
               <TouchableOpacity onPress={() => router.push('/(auth)/register')}>
-                <Text className="text-blue-400 font-p text-lg">
+                <Text className="text-text-secondary2 font-nunito text-lg">
                   Create New
                 </Text>
               </TouchableOpacity>
@@ -92,7 +92,7 @@ const Login = () => {
               autoCapitalize="none"
               value={username}
               onChangeText={setUsername}
-              className="w-full px-3 py-6 text-xl rounded-lg bg-[#282828] mb-4 text-white font-p"
+              className="w-full px-3 py-6 text-xl rounded-lg bg-bg-lightWhite shadow mb-4 text-text-primary font-nunito"
             />
 
             <TextInput
@@ -101,27 +101,27 @@ const Login = () => {
               secureTextEntry
               value={password}
               onChangeText={setPassword}
-              className="w-full px-3 py-6 text-xl rounded-lg bg-[#282828] mb-6 text-white font-p"
+              className="w-full px-3 py-6 text-xl rounded-lg bg-bg-lightWhite shadow mb-6 text-text-primary font-nunito"
             />
 
             <TouchableOpacity
               onPress={handleLogin}
               disabled={isLoading}
-              className={`bg-blue-500 px-3 py-4 rounded-lg ${
+              className={`bg-bg-secondary px-3 py-4 rounded-lg shadow ${
                 isLoading ? 'opacity-70' : ''
               }`}
             >
               {isLoading ? (
                 <ActivityIndicator color="white" />
               ) : (
-                <Text className="text-white text-2xl font-pbold text-center">
+                <Text className="text-text-primary2 text-2xl font-nunitobold text-center">
                   Login
                 </Text>
               )}
             </TouchableOpacity>
           </View>
 
-          <Text className="text-gray-400 font-p text-center text-[10px] mt-10">
+          <Text className="text-gray-400 font-nunito text-center text-[10px] mt-10">
             By logging in, you agree to our Terms of Service and Privacy Policy.
           </Text>
         </ScrollView>

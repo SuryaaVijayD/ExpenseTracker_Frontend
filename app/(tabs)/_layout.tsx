@@ -1,55 +1,66 @@
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import { Tabs } from 'expo-router';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export default function TabLayout() {
+  const insets = useSafeAreaInsets();
+
+  const TAB_HEIGHT = 60;
+  const TAB_BOTTOM = 15;
+
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
         tabBarShowLabel: false,
+
         tabBarStyle: {
-          backgroundColor: '#222831',
+          backgroundColor: '#18004D',
           borderTopWidth: 1,
-          height: 60,
-          paddingTop: 5,
-          borderRadius: 15,
-          position: 'absolute', 
-          bottom: 15,
-          elevation: 0,
-          marginHorizontal: 20,
+          borderColor: 'black',
           borderWidth: 1.5,
-          paddingVertical:10,
-          borderColor: 'black',  
+          borderRadius: 15,
+
+          position: 'absolute',
+          height: TAB_HEIGHT,
+          bottom: TAB_BOTTOM + insets.bottom,
+          marginHorizontal: 20,
+
+          paddingTop: 5,
+          paddingVertical: 10,
+          elevation: 0,
         },
-        tabBarActiveTintColor: '#EEEEEE',
-        tabBarInactiveTintColor: '#666666',
+
+        tabBarActiveTintColor: '#FFFFFF',
+        tabBarInactiveTintColor: '#3C2669',
       }}
     >
-      
       <Tabs.Screen
-        name="index" 
+        name="index"
         options={{
-          title: 'Home',
-          tabBarIcon: ({ color }) => <FontAwesome5 size={20} name="chart-line" color={color} />,
+          tabBarIcon: ({ color }) => (
+            <FontAwesome5 size={20} name="chart-line" color={color} />
+          ),
         }}
       />
 
       <Tabs.Screen
-        name="expense" 
+        name="expense"
         options={{
-          title: 'Expense',
-          tabBarIcon: ({ color }) => <FontAwesome5 size={20} name="wallet" color={color} />,
+          tabBarIcon: ({ color }) => (
+            <FontAwesome5 size={20} name="wallet" color={color} />
+          ),
         }}
       />
 
       <Tabs.Screen
-        name="income" 
+        name="income"
         options={{
-          title: 'Income',
-          tabBarIcon: ({ color }) => <FontAwesome5 size={20} name="coins" color={color} />,
+          tabBarIcon: ({ color }) => (
+            <FontAwesome5 size={20} name="coins" color={color} />
+          ),
         }}
       />
-      
     </Tabs>
   );
 }

@@ -1,11 +1,11 @@
 import { useAuth } from '@/context/AuthContext';
 import ToastMessage from '@/utils/toast';
-import AntDesign from '@expo/vector-icons/AntDesign';
+import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import ExpenseGraph from '../../components/dashboard';
-import RecentTranscation from "../../components/recentrans";
-import "../../global.css";
+import RecentTranscation from '../../components/recentrans';
+import '../../global.css';
 
 export default function HomeScreen() {
   const { user, logout } = useAuth();
@@ -13,9 +13,15 @@ export default function HomeScreen() {
   const handleLogout = async () => {
     try {
       await logout();
-      ToastMessage.success('Logged out', 'You have been logged out successfully');
+      ToastMessage.success(
+        'Logged out',
+        'You have been logged out successfully'
+      );
     } catch {
-      ToastMessage.error('Logout failed', 'Unable to logout. Please try again.');
+      ToastMessage.error(
+        'Logout failed',
+        'Unable to logout. Please try again.'
+      );
     }
   };
 
@@ -23,53 +29,75 @@ export default function HomeScreen() {
     <SafeAreaView className="flex-1 bg-bg-main">
       <ScrollView
         className="flex-1"
-        contentContainerStyle={{ paddingBottom: 40 }}
+        contentContainerStyle={{ paddingBottom: 50 }}
         showsVerticalScrollIndicator={false}
       >
-        {/* Header */}
-        <View className="flex-row items-center justify-between px-5 pt-6">
-          <TouchableOpacity>
-            <AntDesign name="user" size={24} color="#38BDF8" />
-          </TouchableOpacity>
+        {/* ================= HEADER ================= */}
+        <View className="flex-row items-center justify-between px-5 mt-5 pb-2">
+          <View className="flex-row items-center">
+            <TouchableOpacity className="py-4 px-5 rounded-full bg-bg-secondary shadow-lg">
+              <FontAwesome name="user-o" size={24} color="#FFFFFF" />
+            </TouchableOpacity>
 
-          <Text className="text-white text-3xl italic font-p">
-            E<Text className="text-blue-400">T</Text>
-          </Text>
+            <View className="ml-4">
+              <Text className="text-text-primary text-2xl font-nunitoBold">
+                {user?.username ?? 'User'}
+              </Text>
+              <TouchableOpacity>
+                <Text className="font-nunito text-text-muted text-xs mt-1">
+                  View Profile
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
 
-          <TouchableOpacity onPress={handleLogout}>
-            <AntDesign name="logout" size={24} color="#38BDF8" />
+          <TouchableOpacity
+            className="p-4 rounded-full bg-bg-secondary shadow-lg"
+            onPress={handleLogout}
+          >
+            <MaterialIcons name="logout" size={24} color="#FFFFFF" />
           </TouchableOpacity>
         </View>
 
-        <View className="px-5 mt-10 mb-6">
-          <Text className="text-[#9CA3AF] text-sm font-p">
-            Hello 👋
-          </Text>
-          <Text className="text-white text-5xl font-p mt-1">
-            {user?.username ?? 'User'}
-          </Text>
+        {/* ================= TOTAL BALANCE ================= */}
+        <View className="mt-8 px-5">
+          <View className=" rounded-2xl py-6 px-4 items-center">
+            <Text className="font-nunito text-text-secondary text-[11px] uppercase">
+              Total Balance
+            </Text>
+
+            <Text className="font-nunitoBold text-text-primary text-5xl mt-2">
+              {user?.salary ? `₹${user.salary}` : '₹0'}
+            </Text>
+          </View>
         </View>
 
-        <View className="px-5">
+        {/* ================= GRAPH ================= */}
+        <View className="px-5 mt-10">
           <ExpenseGraph salary={String(user?.salary ?? '0')} />
         </View>
 
-        <View className="px-5 mt-6">
-          <Text className="text-blue-400 text-xl font-pbold mb-3">
+        {/* ================= RECENT TRANSACTIONS ================= */}
+        <View className="px-5 mt-8">
+          <Text className="text-text-primary text-3xl font-nunitoBold mb-6">
             Recent Transactions
           </Text>
-          <View className="bg-bg-card p-4 rounded-xl border border-gray-800">
+
+          <View className="bg-bg-secondary p-4 rounded-2xl">
             <RecentTranscation />
           </View>
         </View>
 
-        <View className="mt-10 px-6 items-center">
-          <Text className="text-gray-700 text-center text-xs leading-5">
+        {/* ================= FOOTER ================= */}
+        <View className="mt-12 px-6 items-center">
+          <Text className="text-text-muted text-center text-xs leading-5">
             It's a developmental project. Mistakes may happen. Kindly ignore it.
           </Text>
 
           <TouchableOpacity className="mt-3">
-            <Text className="text-blue-400 text-sm">Contact</Text>
+            <Text className="text-accent text-sm font-nunito">
+              Contact
+            </Text>
           </TouchableOpacity>
         </View>
       </ScrollView>

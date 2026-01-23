@@ -1,42 +1,51 @@
 import React from 'react';
-import { Dimensions, View } from 'react-native';
+import { Dimensions, Text, View } from 'react-native';
 import { PieChart } from 'react-native-chart-kit';
 
-type PieChartProps = {
-  data: { name: string; amount: number; color: string }[];
+type Props = {
+  categories: {
+    name: string;
+    amount: number;
+    color: string;
+  }[];
 };
 
-const screenWidth = Dimensions.get('window').width;
+const width = Dimensions.get('window').width - 40;
 
-const ExpensePieChart: React.FC<PieChartProps> = ({ data }) => {
-  const chartData = data.map(d => ({
-    name: d.name,
-    population: d.amount,
-    color: d.color,
-    legendFontColor: '#9CA3AF', // Secondary
-    legendFontSize: 12,
-  }));
+export default function ExpensePieChart({ categories }: Props) {
+  if (categories.length === 0) {
+    return (
+      <View className="h-[220px] bg-bg-card rounded-2xl mb-6 flex justify-center items-center">
+        <Text className="text-text-secondary">
+          No data available
+        </Text>
+        <Text className="text-text-secondary text-sm mt-1">
+          Please add expenses
+        </Text>
+      </View>
+    );
+  }
 
   return (
-    <View style={{ alignItems: 'center', marginVertical: 10 }}>
-      <PieChart
-        data={chartData}
-        width={screenWidth - 40}
-        height={220}
-        chartConfig={{
-          backgroundColor: '#0B0F14', // Main dark bg
-          backgroundGradientFrom: '#0B0F14',
-          backgroundGradientTo: '#0B0F14',
-          color: (opacity = 1) => `rgba(56, 189, 248, ${opacity})`, // Accent color
-          labelColor: () => '#FFFFFF',
-        }}
-        accessor="population"
-        backgroundColor="transparent"
-        paddingLeft="15"
-        absolute
-      />
-    </View>
+    <PieChart
+      data={categories.map(c => ({
+        name: c.name,
+        population: c.amount,
+        color: c.color,
+        legendFontColor: '#9CA3AF',
+        legendFontSize: 12,
+      }))}
+      width={width}
+      height={220}
+      accessor="population"
+      backgroundColor="transparent"
+      paddingLeft="10"
+      absolute
+      chartConfig={{
+        backgroundGradientFrom: '#0B0F14',
+        backgroundGradientTo: '#0B0F14',
+        color: () => '#38BDF8',
+      }}
+    />
   );
-};
-
-export default ExpensePieChart;
+}

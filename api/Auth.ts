@@ -1,4 +1,3 @@
-// api/Auth.ts
 
 const BASE_URL = 'https://expensetracker-backend-5dac.onrender.com';
 
