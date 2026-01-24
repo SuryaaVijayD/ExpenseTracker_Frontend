@@ -1,12 +1,15 @@
+import { addExpenseApi, fetchExpensesByMonth } from '@/api/expenseApi';
 import AddTransactionModal from '@/components/AddTransactionModal';
 import CategoryCards from '@/components/CategoryCards';
 import ExpensePieChart from '@/components/ExpensePieChart';
 import TransactionsSection from '@/components/TransactionsSection';
 import { useAuth } from '@/context/AuthContext';
 import generateRandomColor from '@/utils/colorGenerator';
-import React, { useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+
+
 
 
 export type Transaction = {
@@ -40,7 +43,7 @@ const isSameMonth = (dateStr: string, month: number, year: number) => {
 export default function ExpensePage() {
   const today = new Date();
 
-  const { user } = useAuth();
+  const { user, token } = useAuth();
 
   const todayMonth = today.getMonth();
   const todayYear = today.getFullYear();
@@ -87,31 +90,26 @@ export default function ExpensePage() {
     });
   };
 
+  
 
-  const addTransaction = (data: {
+  const addTransaction = async (data: {
     amount: number;
     category: string;
     description: string;
   }) => {
-    setTransactions(prev => [
-      {
-        id: Date.now().toString(),
-        amount: data.amount,
-        category: data.category,
-        description: data.description,
-        date: new Date().toISOString(),
-      },
-      ...prev,
-    ]);
+    if (!token) return;
+
+    try {
+      console.log("Expense adding in progress...");
+      const savedExpense = await addExpenseApi(token, data);
+      setTransactions(prev => [savedExpense, ...prev]);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
 
-  const filteredTransactions = useMemo(() => {
-    return transactions.filter(tx =>
-      isSameMonth(tx.date, monthIndex, year)
-    );
-  }, [transactions, monthIndex, year]);
-
+  const filteredTransactions = transactions;
 
   const categories = useMemo<CategorySummary[]>(() => {
     const map = new Map<string, CategorySummary>();
@@ -137,6 +135,25 @@ export default function ExpensePage() {
   }, [filteredTransactions]);
 
 
+  const totalExpense = useMemo(
+    () => filteredTransactions.reduce((sum, tx) => sum + tx.amount, 0),
+    [filteredTransactions]
+  );
+
+  const remainingAmount = user ? user.salary - totalExpense : 0;
+
+
+
+  useEffect(() => {
+  if (!token) return;
+
+  fetchExpensesByMonth(token, monthIndex, year)
+    .then(setTransactions)
+    .catch(err => console.error(err));
+}, [monthIndex, year, token]);
+
+
+
   return (
     <SafeAreaView className="flex-1 bg-bg-main">
       <ScrollView className="px-5 py-2">
@@ -156,7 +173,7 @@ export default function ExpensePage() {
                   numberOfLines={1}
                   adjustsFontSizeToFit
                 >
-                  ₹1200
+                  ₹{totalExpense}
                 </Text>
               </View>
             </View>
@@ -165,13 +182,13 @@ export default function ExpensePage() {
 
             <View className="flex-1 items-center">
               <View className='flex-1 items-end'>
-                <Text className="text-text-muted text-sm">Inc</Text>
+                <Text className="text-text-muted text-sm">Rem</Text>
                 <Text
                   className="text-text-primary2 text-3xl font-nunito font-semibold"
                   numberOfLines={1}
                   adjustsFontSizeToFit
                 >
-                  ₹{user?.salary ?? 0}
+                  ₹{remainingAmount}
                 </Text>
               </View>
             </View>

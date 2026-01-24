@@ -40,7 +40,7 @@ export default function HomeScreen() {
             </TouchableOpacity>
 
             <View className="ml-4">
-              <Text className="text-text-primary text-2xl font-nunitoBold">
+              <Text className="text-text-primary text-2xl font-nunitoBold capitalize">
                 {user?.username ?? 'User'}
               </Text>
               <TouchableOpacity>
@@ -67,7 +67,7 @@ export default function HomeScreen() {
             </Text>
 
             <Text className="font-nunitoBold text-text-primary text-5xl mt-2">
-              {user?.salary ? `₹${user.salary}` : '₹0'}
+              {user?.salary ? `₹${user.salary}` : '₹0.00'}
             </Text>
           </View>
         </View>
