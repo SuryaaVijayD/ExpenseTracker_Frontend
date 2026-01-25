@@ -1,3 +1,4 @@
+import ToastMessage from '@/utils/toast';
 import React, { useState } from 'react';
 import { Modal, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
@@ -16,6 +17,44 @@ export default function AddTransactionModal({ visible, onClose, onSave }: Props)
   const [category, setCategory] = useState('');
   const [description, setDescription] = useState('');
 
+  const [errors, setErrors] = useState({
+    amount: false,
+    category: false,
+    description: false,
+  });
+
+  const handleSave = () => {
+    const newErrors = {
+      amount: !amount,
+      category: !category,
+      description: !description,
+    };
+
+    setErrors(newErrors);
+
+    if (Object.values(newErrors).some(Boolean)) {
+      ToastMessage.info('Attention Required', 'Please fill in all fields');
+      return;
+    }
+
+    onSave({
+      amount: Number(amount),
+      category,
+      description,
+    });
+
+    setAmount('');
+    setCategory('');
+    setDescription('');
+    setErrors({ amount: false, category: false, description: false });
+    onClose();
+  };
+
+  const inputStyle = (hasError: boolean) =>
+    `rounded-xl px-4 py-4 mb-3 text-text-primary ${
+      hasError ? 'border border-red-500 bg-bg-lightWhite' : 'bg-bg-lightWhite'
+    }`;
+
   return (
     <Modal visible={visible} transparent animationType="fade">
       <View className="flex-1 bg-black/40 justify-center px-4">
@@ -27,11 +66,11 @@ export default function AddTransactionModal({ visible, onClose, onSave }: Props)
           {/* Amount */}
           <TextInput
             placeholder="Amount"
-            placeholderTextColor="#A0A0A0" // gray placeholder
+            placeholderTextColor="#A0A0A0"
             keyboardType="numeric"
             value={amount}
             onChangeText={setAmount}
-            className="bg-bg-lightWhite rounded-xl px-4 py-4 mb-3 text-text-primary"
+            className={inputStyle(errors.amount)}
           />
 
           {/* Category */}
@@ -40,7 +79,7 @@ export default function AddTransactionModal({ visible, onClose, onSave }: Props)
             placeholderTextColor="#A0A0A0"
             value={category}
             onChangeText={setCategory}
-            className="bg-bg-lightWhite rounded-xl px-4 py-4 mb-3 text-text-primary"
+            className={inputStyle(errors.category)}
           />
 
           {/* Description */}
@@ -49,11 +88,11 @@ export default function AddTransactionModal({ visible, onClose, onSave }: Props)
             placeholderTextColor="#A0A0A0"
             value={description}
             onChangeText={setDescription}
-            className="bg-bg-lightWhite rounded-xl px-4 py-4 mb-6 text-text-primary"
+            className={inputStyle(errors.description)}
           />
 
           {/* Buttons */}
-          <View className="flex-row justify-end space-x-4">
+          <View className="flex-row justify-end space-x-4 mt-4">
             {/* Cancel */}
             <TouchableOpacity
               onPress={onClose}
@@ -64,17 +103,7 @@ export default function AddTransactionModal({ visible, onClose, onSave }: Props)
 
             {/* Save */}
             <TouchableOpacity
-              onPress={() => {
-                onSave({
-                  amount: Number(amount),
-                  category,
-                  description,
-                });
-                setAmount('');
-                setCategory('');
-                setDescription('');
-                onClose();
-              }}
+              onPress={handleSave}
               className="bg-brand-primary px-6 py-3 ml-3 rounded-xl justify-center items-center"
             >
               <Text className="text-white font-nunitoBold">Save</Text>

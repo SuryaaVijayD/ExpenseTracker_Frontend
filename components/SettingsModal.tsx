@@ -25,9 +25,9 @@ export default function SettingsModal({ visible, onClose }: Props) {
 
           <ScrollView showsVerticalScrollIndicator={false}>
             <DetailRow label="Theme" value="Light" />
-            <DetailRow label="Notifications" value="Enabled" />
+            <DetailRow label="Notifications" value="Disabled" />
             <DetailRow label="Language" value="English" />
-            <DetailRow label="Security" value="Change password" />
+            <DetailRow label="Security" value="SHA-256" />
             <DetailRow label="App Version" value="v1.0.0" />
           </ScrollView>
         </View>

@@ -31,7 +31,7 @@ export default function TransactionsSection({
 
       {/* EMPTY STATE */}
       {transactions.length === 0 ? (
-        <View className="bg-bg-lightWhite rounded-xl p-4">
+        <View className="bg-bg-lightWhite rounded-xl p-4 border-l-2 border-bg-brand-primary">
           <Text className="text-text-muted text-center">
             No transactions yet. Add your first expense.
           </Text>
@@ -40,7 +40,7 @@ export default function TransactionsSection({
         transactions.map(tx => (
           <View
             key={tx.id}
-            className="bg-bg-lightWhite p-4 rounded-xl mb-3 border border-bg-surface"
+            className="bg-bg-lightWhite p-4 rounded-xl mb-3 border-l-2 border-bg-brand-primary"
           >
             <View className="flex-row justify-between items-center">
               <Text className="text-text-primary font-nunitoBold text-base">

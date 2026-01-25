@@ -117,18 +117,23 @@ export default function ExpensePage() {
         </Text>
 
         {/* SUMMARY CARD */}
-        <View className="mt-6 bg-brand-primary rounded-2xl px-6 py-6 flex-row justify-between">
-          <View>
-            <Text className="text-text-primary2 text-xs">Total Expense</Text>
+        <View className="mt-6 bg-brand-primary rounded-2xl px-6 py-6 flex-row justify-between items-center">
+          {/* Total Expense */}
+          <View className="flex-1 items-center">
+            <Text className="text-gray-300 text-xs">Total Expense</Text>
             <Text className="text-white text-3xl font-nunitoBold mt-1">
-              ₹{totalExpense}
+              ₹{Number(totalExpense).toLocaleString()}
             </Text>
           </View>
 
-          <View>
-            <Text className="text-text-primary2 text-xs">Remaining</Text>
+          {/* Divider */}
+          <View className="w-px bg-white h-12 opacity-40" />
+
+          {/* Remaining Amount */}
+          <View className="flex-1 items-center">
+            <Text className="text-gray-300 text-xs">Remaining</Text>
             <Text className="text-white text-3xl font-nunitoBold mt-1">
-              ₹{remainingAmount}
+              ₹{Number(remainingAmount).toLocaleString()}
             </Text>
           </View>
         </View>

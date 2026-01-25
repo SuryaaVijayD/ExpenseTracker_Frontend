@@ -25,7 +25,7 @@ const MenuItem = ({ icon, label, onPress, highlight }: MenuItemProps) => (
   <TouchableOpacity
     onPress={onPress}
     activeOpacity={0.85}
-    className={`flex-row items-center justify-between px-5 py-6 rounded-xl mb-3 bg-bg-lightWhite ${
+    className={`flex-row items-center justify-between px-5 py-6 rounded-xl mb-3 bg-bg-lightWhite border-l-2 border-bg-brand-primary ${
       highlight ? 'border border-brand-primary/20' : ''
     }`}
   >
@@ -63,12 +63,20 @@ export default function ProfileScreen() {
   const [openHelp, setOpenHelp] = useState(false);
   const [openPrivacy, setOpenPrivacy] = useState(false);
   const [openSettings, setOpenSettings] = useState(false);
+  const [underDevModal, setUnderDevModal] = useState(false); // New state
+  const [underDevTitle, setUnderDevTitle] = useState(''); // Dynamic title
+
+  // Handler to show under development modal
+  const showUnderDevelopment = (title: string) => {
+    setUnderDevTitle(title);
+    setUnderDevModal(true);
+  };
 
   return (
     <SafeAreaView className="flex-1 bg-bg-main">
       <ScrollView
-        contentContainerStyle={{ paddingBottom: 50 }}
         showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingBottom: 100 }}
       >
         {/* ================= HEADER ================= */}
         <View className="flex-row items-center justify-between px-5 mt-6">
@@ -76,7 +84,10 @@ export default function ProfileScreen() {
             Profile
           </Text>
 
-          <TouchableOpacity className="p-3 rounded-full bg-brand-primary">
+          <TouchableOpacity
+            onPress={() => showUnderDevelopment('Notifications')}
+            className="p-3 rounded-full bg-brand-primary"
+          >
             <Ionicons name="notifications-outline" size={24} color="#FFFFFF" />
           </TouchableOpacity>
         </View>
@@ -114,6 +125,7 @@ export default function ProfileScreen() {
           <MenuItem
             icon={<Feather name="bar-chart-2" size={22} color="#4B5563" />}
             label="Reports"
+            onPress={() => showUnderDevelopment('Reports')}
           />
 
           <MenuItem
@@ -136,7 +148,7 @@ export default function ProfileScreen() {
           />
 
           <MenuItem
-            icon={<Feather name="log-out" size={22} color="#EF4444" />}
+            icon={<Feather name="log-out" size={22} color="#4B5563" />}
             label="Log out"
             onPress={logout}
           />
@@ -218,6 +230,26 @@ export default function ProfileScreen() {
         visible={openSettings}
         onClose={() => setOpenSettings(false)}
       />
+
+      {/* ================= UNDER DEVELOPMENT MODAL ================= */}
+      <Modal visible={underDevModal} transparent animationType="slide">
+        <View className="flex-1 bg-black/40 justify-end">
+          <View className="bg-bg-main rounded-t-3xl px-6 py-6 max-h-[40%] items-center justify-center">
+            <Text className="text-xl font-nunitoBold text-text-primary mb-4">
+              🚧 {underDevTitle}
+            </Text>
+            <Text className="text-text-primary text-center">
+              This feature is under development. Stay tuned for updates!
+            </Text>
+            <TouchableOpacity
+              onPress={() => setUnderDevModal(false)}
+              className="mt-6 bg-brand-primary px-6 py-3 rounded-xl"
+            >
+              <Text className="text-white font-nunitoBold">Close</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 }

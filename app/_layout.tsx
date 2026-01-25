@@ -44,7 +44,7 @@ export default function RootLayout() {
           style={styles.logo}
           resizeMode="contain"
         />
-        <Text style={styles.name}>Developed By Suryaa D</Text>
+        <Text style={styles.name}>Crafted @Suryaa,D</Text>
       </View>
     );
   }
