@@ -17,13 +17,14 @@
       "supportsTablet": true
     },
     "android": {
+      "package": "com.suryaavijay.expensetracker",
+      "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/Logo.png",
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false,
-      "package": "com.suryaavijay.ExpenseTracker"
+      "predictiveBackGestureEnabled": false
     },
     "web": {
       "bundler": "metro",
