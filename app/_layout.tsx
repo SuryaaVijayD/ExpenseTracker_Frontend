@@ -77,7 +77,6 @@ function AuthGate() {
       router.replace('/(tabs)');
     }
 
-    // Add a small delay to hide splash after auth is ready
     const timer = setTimeout(() => SplashScreen.hideAsync(), 500);
     return () => clearTimeout(timer);
   }, [token, isLoading, segments]);
@@ -90,7 +89,7 @@ function AuthGate() {
   );
 }
 
-// Styles for splash
+
 const { height } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
