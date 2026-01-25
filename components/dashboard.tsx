@@ -3,14 +3,12 @@ import { Dimensions, ScrollView, Text, TouchableOpacity, View } from 'react-nati
 import { LineChart } from 'react-native-chart-kit';
 import { AbstractChartConfig } from 'react-native-chart-kit/dist/AbstractChart';
 
-type Props = {
-  salary: string;
-};
-
-const SCREEN_WIDTH = Dimensions.get('window').width;
+type Props = { salary: string };
 type ViewMode = '1W' | '1M';
 
-export default function StockExpenseChart({ salary }: Props) {
+const SCREEN_WIDTH = Dimensions.get('window').width;
+
+export default function ExpenseGraph({ salary }: Props) {
   const [viewMode, setViewMode] = useState<ViewMode>('1W');
   const scrollViewRef = useRef<ScrollView>(null);
 
@@ -19,10 +17,7 @@ export default function StockExpenseChart({ salary }: Props) {
   const currentMonth = date.toLocaleString('default', { month: 'short' });
 
   const labels = Array.from({ length: currentDay }, (_, i) => `${i + 1}`);
-  const data = Array.from(
-    { length: currentDay },
-    () => Math.floor(Math.random() * 500) + 100
-  );
+  const data = Array.from({ length: currentDay }, () => Math.floor(Math.random() * 500) + 100);
 
   const graphWidth =
     viewMode === '1M'
@@ -36,41 +31,36 @@ export default function StockExpenseChart({ salary }: Props) {
   }, [viewMode]);
 
   const chartConfig: AbstractChartConfig = {
-    backgroundGradientFrom: '#18004D',
-    backgroundGradientTo: '#18004D',
-
-    fillShadowGradientFrom: '#3C2669',
-    fillShadowGradientTo: '#3C2669',
-    fillShadowGradientOpacity: 0.18,
-
-    color: (opacity = 1) => `rgba(56, 189, 248, ${opacity})`,
+    backgroundGradientFrom: '#FFFFFF',
+    backgroundGradientTo: '#FFFFFF',
+    fillShadowGradientFrom: '#4DA3FF',
+    fillShadowGradientTo: '#4DA3FF',
+    fillShadowGradientOpacity: 0.12,
+    color: (opacity = 1) => `rgba(77,163,255,${opacity})`,
     strokeWidth: 2.5,
-
     labelColor: () => '#6B7280',
-
     propsForDots: {
       r: '4',
-      strokeWidth: '3',
-      stroke: '#3C2669',
+      strokeWidth: '2',
+      stroke: '#393D7E',
     },
-
     decimalPlaces: 0,
   };
 
   return (
-    <View className="bg-bg-secondary rounded-2xl px-4 pt-4 pb-3 shadow-sm">
-      {/* ================= HEADER ================= */}
-      <View className="flex-row items-center justify-between mb-3">
+    <View className="bg-bg-lightWhite rounded-2xl px-4 pt-4 pb-3">
+      {/* HEADER */}
+      <View className="flex-row items-center justify-between mb-4">
         <View>
-          <Text className="text-text-muted text-xs tracking-wide uppercase">
+          <Text className="text-text-muted text-xs uppercase tracking-wide">
             {currentMonth} Spending
           </Text>
-          <Text className="text-text-primary2 font-nunitoBold text-lg mt-1">
+          <Text className="text-text-primary font-nunitoBold text-lg mt-1">
             Expense Overview
           </Text>
         </View>
 
-        <View className="flex-row bg-white rounded-xl p-1 border border-gray-200">
+        <View className="flex-row bg-white rounded-xl p-1">
           {(['1W', '1M'] as ViewMode[]).map(mode => {
             const active = viewMode === mode;
             return (
@@ -78,12 +68,12 @@ export default function StockExpenseChart({ salary }: Props) {
                 key={mode}
                 onPress={() => setViewMode(mode)}
                 className={`px-4 py-1.5 rounded-lg ${
-                  active ? 'bg-bg-cardlightblue' : ''
+                  active ? 'bg-brand-primarySoft' : ''
                 }`}
               >
                 <Text
                   className={`text-xs font-nunitoBold ${
-                    active ? 'text-text-primary' : 'text-text-muted'
+                    active ? 'text-brand-primary' : 'text-text-muted'
                   }`}
                 >
                   {mode}
@@ -94,36 +84,30 @@ export default function StockExpenseChart({ salary }: Props) {
         </View>
       </View>
 
-      {/* ================= CHART ================= */}
-      <View className="mt-2">
-        <ScrollView
-          ref={scrollViewRef}
-          horizontal
-          scrollEnabled={viewMode === '1W'}
-          showsHorizontalScrollIndicator={false}
-        >
-          <LineChart
-            data={{
-              labels,
-              datasets: [{ data }],
-            }}
-            width={graphWidth}
-            height={220}
-            yAxisLabel="₹"
-            withInnerLines={false}
-            withOuterLines={false}
-            chartConfig={chartConfig}
-            bezier
-            style={{ borderRadius: 16 }}
-          />
-        </ScrollView>
-      </View>
+      {/* CHART */}
+      <ScrollView
+        ref={scrollViewRef}
+        horizontal
+        scrollEnabled={viewMode === '1W'}
+        showsHorizontalScrollIndicator={false}
+      >
+        <LineChart
+          data={{ labels, datasets: [{ data }] }}
+          width={graphWidth}
+          height={220}
+          yAxisLabel="₹"
+          withInnerLines={false}
+          withOuterLines={false}
+          chartConfig={chartConfig}
+          bezier
+          style={{ borderRadius: 16 }}
+        />
+      </ScrollView>
 
-      {/* ================= FOOT NOTE ================= */}
       <Text className="text-text-muted text-xs text-center mt-3">
         {viewMode === '1W'
-          ? 'Scroll horizontally to view earlier days'
-          : 'Showing full month summary'}
+          ? 'Scroll to see previous days'
+          : 'Monthly summary view'}
       </Text>
     </View>
   );

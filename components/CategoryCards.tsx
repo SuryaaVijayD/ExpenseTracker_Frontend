@@ -17,11 +17,11 @@ const GAP = 12;
 const CARD_WIDTH = (screenWidth - 40 - GAP) / 2;
 
 export default function CategoryCards({ categories }: Props) {
-  if (categories.length === 0) return null;
+  if (!categories.length) return null;
 
   return (
-    <View>
-      <Text className="text-text-primary text-2xl font-nunitobold mb-4">
+    <View className="mt-8">
+      <Text className="text-2xl font-nunitoBold text-text-primary mb-4">
         Categories
       </Text>
 
@@ -33,21 +33,19 @@ export default function CategoryCards({ categories }: Props) {
               width: CARD_WIDTH,
               marginRight: index % 2 === 0 ? GAP : 0,
               marginBottom: GAP,
-              borderColor: '#1A1F26',
-              borderWidth: 1,
             }}
-            className="bg-bg-card p-4 rounded-xl"
+            className="bg-bg-lightWhite rounded-xl p-4"
           >
             <View
               style={{ backgroundColor: cat.color }}
-              className="h-1 rounded-full mb-2"
+              className="h-1.5 rounded-full mb-3"
             />
 
-            <Text className="text-text-primary font-nunitobold text-lg">
+            <Text className="text-text-primary font-nunitoBold text-lg">
               {cat.name}
             </Text>
 
-            <Text className="text-text-secondary">
+            <Text className="text-text-secondary mt-1">
               ₹ {cat.amount}
             </Text>
           </View>

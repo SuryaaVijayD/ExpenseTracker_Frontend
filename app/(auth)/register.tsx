@@ -9,7 +9,7 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  View
+  View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { authService } from '../../api/Auth';
@@ -42,11 +42,7 @@ const Register = () => {
       });
 
       if (response.success) {
-        ToastMessage.success('Registration successful', 'Welcome back 👋');
-        setTimeout(() => {
-          console.log();
-        }, 2000);
-
+        ToastMessage.success('Account created', 'You can login now');
         router.back();
       }
     } catch (error: any) {
@@ -60,7 +56,7 @@ const Register = () => {
     <SafeAreaView className="flex-1 bg-bg-main">
       <KeyboardAvoidingView
         style={{ flex: 1 }}
-        behavior={Platform.OS === 'ios' ? 'padding' : 'padding'}
+        behavior="padding"
         keyboardVerticalOffset={Platform.OS === 'ios' ? 80 : 0}
       >
         <ScrollView
@@ -68,88 +64,60 @@ const Register = () => {
             flexGrow: 1,
             paddingHorizontal: 24,
             paddingVertical: 40,
-            paddingBottom: 120,
           }}
-          keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
         >
-
-          <Text className="text-text-primary font-nunito text-3xl italic mb-10">
-            E<Text className="text-text-secondary2 font-nunitobold">T</Text>
+          <Text className="text-brand-primary font-nunito italic text-3xl mb-12">
+            E<Text className="font-nunitobold">T</Text>
           </Text>
 
-
           <View className="flex-1 justify-center">
-            <Text className="text-text-primary font-nunitobold text-6xl mb-2">
-              Create {'\n'}
-              Account <Text className="text-text-secondary2">now</Text>
+            <Text className="text-text-primary font-nunitobold text-6xl mb-4">
+              Create{'\n'}
+              Account
             </Text>
 
-            <View className="flex-row items-center mb-6">
+            <View className="flex-row items-center mb-8">
               <Text className="text-text-secondary text-lg">
-                Already have an account?{' '}
+                Already registered?
               </Text>
               <TouchableOpacity onPress={() => router.back()}>
-                <Text className="text-text-secondary2 text-lg">Login</Text>
+                <Text className="text-brand-primary text-lg ml-2 font-nunitobold">
+                  Login
+                </Text>
               </TouchableOpacity>
             </View>
 
-            <TextInput
-              placeholder="Username"
-              placeholderTextColor="#6B7280"
-              value={username}
-              onChangeText={setUsername}
-              className="w-full px-3 py-6 text-xl rounded-lg bg-bg-lightWhite shadow-lg mb-4 text-white font-nunito"
-            />
-
-            <TextInput
-              placeholder="Email"
-              placeholderTextColor="#6B7280"
-              value={email}
-              onChangeText={setEmail}
-              autoCapitalize="none"
-              keyboardType="email-address"
-              className="w-full px-3 py-6 text-xl rounded-lg bg-bg-lightWhite shadow-lg mb-4 text-white font-nunito"
-            />
-
-            <TextInput
-              placeholder="Phone"
-              placeholderTextColor="#6B7280"
-              value={phone}
-              onChangeText={setPhone}
-              keyboardType="phone-pad"
-              className="w-full px-3 py-6 text-xl rounded-lg bg-bg-lightWhite shadow-lg mb-4 text-white font-nunito"
-            />
-
-            <TextInput
-              placeholder="Salary"
-              placeholderTextColor="#6B7280"
-              value={salary}
-              onChangeText={setSalary}
-              keyboardType="numeric"
-              className="w-full px-3 py-6 text-xl rounded-lg bg-bg-lightWhite shadow-lg mb-4 text-white font-nunito"
-            />
-
-            <TextInput
-              placeholder="Password"
-              placeholderTextColor="#6B7280"
-              value={password}
-              onChangeText={setPassword}
-              secureTextEntry
-              className="w-full px-3 py-6 text-xl rounded-lg bg-bg-lightWhite shadow-lg mb-10 text-white font-nunito"
-            />
+            {/* INPUTS */}
+            {[
+              { placeholder: 'Username', value: username, setter: setUsername },
+              { placeholder: 'Email', value: email, setter: setEmail },
+              { placeholder: 'Phone', value: phone, setter: setPhone },
+              { placeholder: 'Monthly Salary', value: salary, setter: setSalary },
+              { placeholder: 'Password', value: password, setter: setPassword, secure: true },
+            ].map((field, i) => (
+              <TextInput
+                key={i}
+                placeholder={field.placeholder}
+                placeholderTextColor="#9CA3AF"
+                value={field.value}
+                secureTextEntry={field.secure}
+                onChangeText={field.setter}
+                className="bg-white px-4 py-5 rounded-xl text-lg text-text-primary shadow mb-4"
+              />
+            ))}
 
             <TouchableOpacity
               onPress={handleRegister}
               disabled={isLoading}
-              className={`bg-bg-secondary rounded-lg px-3 py-4 shadow ${
+              className={`bg-brand-primary py-4 rounded-xl shadow mt-4 ${
                 isLoading ? 'opacity-70' : ''
               }`}
             >
               {isLoading ? (
-                <ActivityIndicator color="white" />
+                <ActivityIndicator color="#fff" />
               ) : (
-                <Text className="text-white text-center py-1 text-xl font-nunitobold">
+                <Text className="text-white text-center text-xl font-nunitobold">
                   Sign Up
                 </Text>
               )}

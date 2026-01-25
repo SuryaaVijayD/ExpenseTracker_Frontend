@@ -8,30 +8,41 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        /* ================= BACKGROUNDS ================= */
         bg: {
-          main: "#FFFFFF",    
-          lightWhite:"#F3F4F6", 
-          card1: "#FFF6FB",    
-          card2:"#FEF6E1", 
-          cardlightblue: "#EBF7FF",
-          surface: "#E5E7EB", 
-          secondary: "#18004D",
-          secorndaryIcon: "#3C2669",
+          main: "#FFFFFF",
+          lightWhite: "#F3F4F6",
+          surface: "#E5E7EB",
         },
 
+        /* ================= TEXT ================= */
         text: {
           primary: "#111827",
-          primary2: "#EBF7FF",
-          teritery: "#FD7979",
           secondary: "#4B5563",
-          secondary2: "#393D7E",
           muted: "#6B7280",
           disabled: "#9CA3AF",
         },
 
-        accent: "#38BDF8",
+        /* ================= BRAND ================= */
+        brand: {
+          primary: "#393D7E",
+          accent: "#4DA3FF",
+
+          // Transparent brand variants (PRO)
+          primarySoft: "rgba(57, 61, 126, 0.15)",
+          primaryMedium: "rgba(57, 61, 126, 0.35)",
+          primaryStrong: "rgba(57, 61, 126, 0.7)",
+        },
+
+        /* ================= OVERLAYS / GLASS ================= */
+        overlay: {
+          dark: "rgba(0, 0, 0, 0.35)",
+          darker: "rgba(0, 0, 0, 0.55)",
+          light: "rgba(255, 255, 255, 0.6)",
+        },
       },
 
+      /* ================= FONTS ================= */
       fontFamily: {
         nunito: ["Nunito_400Regular"],
         nunitoLight: ["Nunito_300Light"],
@@ -39,6 +50,7 @@ module.exports = {
         nunitoBold: ["Nunito_700Bold"],
       },
 
+      /* ================= RADIUS ================= */
       borderRadius: {
         xl: "16px",
         "2xl": "24px",

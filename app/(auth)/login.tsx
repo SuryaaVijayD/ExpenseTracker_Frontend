@@ -51,7 +51,7 @@ const Login = () => {
     <SafeAreaView className="flex-1 bg-bg-main">
       <KeyboardAvoidingView
         style={{ flex: 1 }}
-        behavior={Platform.OS === 'ios' ? 'padding' : 'padding'}
+        behavior="padding"
         keyboardVerticalOffset={Platform.OS === 'ios' ? 80 : 0}
       >
         <ScrollView
@@ -59,70 +59,70 @@ const Login = () => {
             flexGrow: 1,
             paddingHorizontal: 24,
             paddingVertical: 40,
-            paddingBottom: 120, 
           }}
-          keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
         >
-
-          <Text className="text-text-primary font-nunito text-3xl italic mb-10">
-            E<Text className="text-text-secondary2 font-nunitoBold">T</Text>
+          {/* LOGO */}
+          <Text className="text-brand-primary font-nunito italic text-3xl mb-12">
+            E<Text className="font-nunitobold">T</Text>
           </Text>
 
           <View className="flex-1 justify-center">
-            <Text className="text-text-primary font-nunitoBold text-6xl mb-4">
-              Hey, {'\n'}
-              Login <Text className="text-text-secondary2 font-nunitoBold">now</Text>
+            <Text className="text-text-primary font-nunitobold text-6xl mb-4">
+              Welcome{'\n'}
+              Back
             </Text>
 
             <View className="flex-row items-center mb-8">
-              <Text className="text-text-secondary font-nunito text-xl">
-                If you are new?{' '}
+              <Text className="text-text-secondary text-lg">
+                New here?
               </Text>
               <TouchableOpacity onPress={() => router.push('/(auth)/register')}>
-                <Text className="text-text-secondary2 font-nunito text-lg">
-                  Create New
+                <Text className="text-brand-primary text-lg ml-2 font-nunitobold">
+                  Create account
                 </Text>
               </TouchableOpacity>
             </View>
 
+            {/* INPUTS */}
             <TextInput
-              placeholder="Enter your username"
-              placeholderTextColor="#6B7280"
+              placeholder="Username"
+              placeholderTextColor="#9CA3AF"
               autoCapitalize="none"
               value={username}
               onChangeText={setUsername}
-              className="w-full px-3 py-6 text-xl rounded-lg bg-bg-lightWhite shadow mb-4 text-text-primary font-nunito"
+              className="bg-white px-4 py-5 rounded-xl text-lg text-text-primary shadow mb-4"
             />
 
             <TextInput
-              placeholder="Enter your password"
-              placeholderTextColor="#6B7280"
+              placeholder="Password"
+              placeholderTextColor="#9CA3AF"
               secureTextEntry
               value={password}
               onChangeText={setPassword}
-              className="w-full px-3 py-6 text-xl rounded-lg bg-bg-lightWhite shadow mb-6 text-text-primary font-nunito"
+              className="bg-white px-4 py-5 rounded-xl text-lg text-text-primary shadow mb-6"
             />
 
+            {/* BUTTON */}
             <TouchableOpacity
               onPress={handleLogin}
               disabled={isLoading}
-              className={`bg-bg-secondary px-3 py-4 rounded-lg shadow ${
+              className={`bg-brand-primary py-4 rounded-xl shadow ${
                 isLoading ? 'opacity-70' : ''
               }`}
             >
               {isLoading ? (
-                <ActivityIndicator color="white" />
+                <ActivityIndicator color="#fff" />
               ) : (
-                <Text className="text-text-primary2 text-2xl font-nunitobold text-center">
+                <Text className="text-white text-center text-xl font-nunitobold">
                   Login
                 </Text>
               )}
             </TouchableOpacity>
           </View>
 
-          <Text className="text-gray-400 font-nunito text-center text-[10px] mt-10">
-            By logging in, you agree to our Terms of Service and Privacy Policy.
+          <Text className="text-gray-400 text-[11px] text-center mt-10">
+            By continuing, you agree to our Terms & Privacy Policy
           </Text>
         </ScrollView>
       </KeyboardAvoidingView>
