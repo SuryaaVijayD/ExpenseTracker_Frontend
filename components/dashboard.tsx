@@ -60,7 +60,7 @@ export default function ExpenseGraph({ salary }: Props) {
           </Text>
         </View>
 
-        <View className="flex-row bg-white rounded-xl p-1">
+        <View className="flex-row rounded-xl p-1">
           {(['1W', '1M'] as ViewMode[]).map(mode => {
             const active = viewMode === mode;
             return (

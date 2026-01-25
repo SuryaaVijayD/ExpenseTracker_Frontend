@@ -60,7 +60,7 @@ const RecentTransactions = () => {
       contentContainerStyle={{ paddingBottom: 100 }} // safe space for bottom tabs
       scrollEnabled={false} // disables internal scrolling to prevent nesting issues
       renderItem={({ item }) => (
-        <View className="flex-row justify-between items-center bg-white rounded-xl p-4 mb-3 shadow-sm">
+        <View className="flex-row justify-between items-center border-l-2 border-bg-brand-primary bg-white rounded-xl p-4 mb-3 shadow-sm">
           {/* Left: category + description */}
           <View className="flex-1">
             <Text className="text-text-primary font-nunitoBold text-lg">{item.category}</Text>

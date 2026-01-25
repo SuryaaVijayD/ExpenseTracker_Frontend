@@ -1,9 +1,5 @@
 import { useAuth } from '@/context/AuthContext';
-import {
-  Feather,
-  Ionicons,
-  MaterialIcons,
-} from '@expo/vector-icons';
+import { Feather, Ionicons, MaterialIcons } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import {
   Image,
@@ -63,6 +59,7 @@ const DetailRow = ({
 export default function ProfileScreen() {
   const { user, logout } = useAuth();
   const [openDetails, setOpenDetails] = useState(false);
+  const [openHelp, setOpenHelp] = useState(false); // New state for Help modal
 
   return (
     <SafeAreaView className="flex-1 bg-bg-main">
@@ -77,11 +74,7 @@ export default function ProfileScreen() {
           </Text>
 
           <TouchableOpacity className="p-3 rounded-full bg-brand-primary">
-            <Ionicons
-              name="notifications-outline"
-              size={24}
-              color="#FFFFFF"
-            />
+            <Ionicons name="notifications-outline" size={24} color="#FFFFFF" />
           </TouchableOpacity>
         </View>
 
@@ -125,19 +118,15 @@ export default function ProfileScreen() {
             label="Settings"
           />
 
+          {/* Help button now opens modal */}
           <MenuItem
             icon={<Feather name="help-circle" size={22} color="#4B5563" />}
             label="Help"
+            onPress={() => setOpenHelp(true)}
           />
 
           <MenuItem
-            icon={
-              <MaterialIcons
-                name="privacy-tip"
-                size={22}
-                color="#4B5563"
-              />
-            }
+            icon={<MaterialIcons name="privacy-tip" size={22} color="#4B5563" />}
             label="Privacy & Policy"
             highlight
           />
@@ -168,6 +157,28 @@ export default function ProfileScreen() {
             <DetailRow label="Email" value={user?.email} />
             <DetailRow label="Phone" value={user?.phoneNumber} />
             <DetailRow label="Salary" value={`₹${user?.salary}`} />
+          </View>
+        </View>
+      </Modal>
+
+      {/* ================= HELP MODAL ================= */}
+      <Modal visible={openHelp} transparent animationType="slide">
+        <View className="flex-1 bg-black/40 justify-end">
+          <View className="bg-bg-main rounded-t-3xl px-6 py-6">
+            <View className="flex-row justify-between items-center mb-6">
+              <Text className="text-xl font-nunitoBold text-text-primary">
+                Help & Contact
+              </Text>
+
+              <TouchableOpacity onPress={() => setOpenHelp(false)}>
+                <Ionicons name="close" size={26} color="#6B7280" />
+              </TouchableOpacity>
+            </View>
+
+            <DetailRow label="Contact Email" value="suryaa.profesion@gmail.com" />
+            <DetailRow label="Phone Number" value="+91 6380596461" />
+            <DetailRow label="Working Hours" value="Mon-Fri, 10am-6pm" />
+            <DetailRow label="Notes" value="You can reach out anytime for assistance." />
           </View>
         </View>
       </Modal>
