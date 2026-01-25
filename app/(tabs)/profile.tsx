@@ -10,6 +10,7 @@ import {
   View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import SettingsModal from '../../components/SettingsModal';
 
 /* ================= TYPES ================= */
 type MenuItemProps = {
@@ -40,7 +41,7 @@ const MenuItem = ({ icon, label, onPress, highlight }: MenuItemProps) => (
 );
 
 /* ================= DETAIL ROW ================= */
-const DetailRow = ({
+export const DetailRow = ({
   label,
   value,
 }: {
@@ -55,11 +56,13 @@ const DetailRow = ({
   </View>
 );
 
-/* ================= SCREEN ================= */
+/* ================= PROFILE SCREEN ================= */
 export default function ProfileScreen() {
   const { user, logout } = useAuth();
   const [openDetails, setOpenDetails] = useState(false);
-  const [openHelp, setOpenHelp] = useState(false); // New state for Help modal
+  const [openHelp, setOpenHelp] = useState(false);
+  const [openPrivacy, setOpenPrivacy] = useState(false);
+  const [openSettings, setOpenSettings] = useState(false);
 
   return (
     <SafeAreaView className="flex-1 bg-bg-main">
@@ -116,9 +119,9 @@ export default function ProfileScreen() {
           <MenuItem
             icon={<Feather name="settings" size={22} color="#4B5563" />}
             label="Settings"
+            onPress={() => setOpenSettings(true)}
           />
 
-          {/* Help button now opens modal */}
           <MenuItem
             icon={<Feather name="help-circle" size={22} color="#4B5563" />}
             label="Help"
@@ -129,6 +132,7 @@ export default function ProfileScreen() {
             icon={<MaterialIcons name="privacy-tip" size={22} color="#4B5563" />}
             label="Privacy & Policy"
             highlight
+            onPress={() => setOpenPrivacy(true)}
           />
 
           <MenuItem
@@ -147,7 +151,6 @@ export default function ProfileScreen() {
               <Text className="text-xl font-nunitoBold text-text-primary">
                 Personal Details
               </Text>
-
               <TouchableOpacity onPress={() => setOpenDetails(false)}>
                 <Ionicons name="close" size={26} color="#6B7280" />
               </TouchableOpacity>
@@ -169,7 +172,6 @@ export default function ProfileScreen() {
               <Text className="text-xl font-nunitoBold text-text-primary">
                 Help & Contact
               </Text>
-
               <TouchableOpacity onPress={() => setOpenHelp(false)}>
                 <Ionicons name="close" size={26} color="#6B7280" />
               </TouchableOpacity>
@@ -182,6 +184,40 @@ export default function ProfileScreen() {
           </View>
         </View>
       </Modal>
+
+      {/* ================= PRIVACY MODAL ================= */}
+      <Modal visible={openPrivacy} transparent animationType="slide">
+        <View className="flex-1 bg-black/40 justify-end">
+          <View className="bg-bg-main rounded-t-3xl px-6 py-6 max-h-[80%]">
+            <View className="flex-row justify-between items-center mb-6">
+              <Text className="text-xl font-nunitoBold text-text-primary">
+                Privacy & Policy
+              </Text>
+              <TouchableOpacity onPress={() => setOpenPrivacy(false)}>
+                <Ionicons name="close" size={26} color="#6B7280" />
+              </TouchableOpacity>
+            </View>
+
+            <ScrollView showsVerticalScrollIndicator={false}>
+              <Text className="text-text-primary text-sm mb-4">
+                We respect your privacy and are committed to protecting your personal information. 
+                All the data you provide is securely stored and will not be shared with third parties 
+                without your consent. We may collect basic usage statistics to improve app functionality. 
+                By using this app, you agree to our privacy and policy terms.
+              </Text>
+              <Text className="text-text-primary text-sm">
+                For more details, contact support anytime. Your trust and security are our top priorities.
+              </Text>
+            </ScrollView>
+          </View>
+        </View>
+      </Modal>
+
+      {/* ================= SETTINGS MODAL ================= */}
+      <SettingsModal
+        visible={openSettings}
+        onClose={() => setOpenSettings(false)}
+      />
     </SafeAreaView>
   );
 }
