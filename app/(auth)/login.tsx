@@ -69,17 +69,17 @@ const Login = () => {
 
           <View className="flex-1 justify-center">
             <Text className="text-text-primary font-nunitobold text-6xl mb-4">
-              Welcome{'\n'}
-              Back
+              Hey, ✨ {'\n'}
+              Login Now
             </Text>
 
             <View className="flex-row items-center mb-8">
               <Text className="text-text-secondary text-lg">
-                New here?
+                Newbie? 
               </Text>
               <TouchableOpacity onPress={() => router.push('/(auth)/register')}>
                 <Text className="text-brand-primary text-lg ml-2 font-nunitobold">
-                  Create account
+                  Signup here
                 </Text>
               </TouchableOpacity>
             </View>
