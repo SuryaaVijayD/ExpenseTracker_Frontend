@@ -41,7 +41,7 @@ export default function CategoryCards({ categories }: Props) {
               className="h-1.5 rounded-full mb-3"
             />
 
-            <Text className="text-text-primary font-nunitoBold text-lg">
+            <Text className="text-text-primary capitalize font-nunitoBold text-lg">
               {cat.name}
             </Text>
 

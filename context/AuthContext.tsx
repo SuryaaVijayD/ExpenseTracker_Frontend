@@ -1,17 +1,12 @@
-import { fetchCurrentUser } from '../api/user';
 import * as SecureStore from 'expo-secure-store';
 import React, { createContext, useContext, useEffect, useState } from 'react';
+import { fetchCurrentUser, User } from '../api/user'; // Adjust path to where your API file is
 
-export type User = {
-  username: string;
-  email: string;
-  phoneNumber: string;
-  salary: number;
-};
-
+// 1. Update the Context Type to include setUser
 type AuthContextType = {
   token: string | null;
   user: User | null;
+  setUser: React.Dispatch<React.SetStateAction<User | null>>; // <--- ADD THIS
   isLoading: boolean;
   login: (token: string) => Promise<void>;
   logout: () => Promise<void>;
@@ -31,7 +26,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setUser(userData);
     } catch (err) {
       console.log('Failed to fetch user', err);
-      setUser(null);
+      // Optional: Don't nullify user on simple fetch error to keep UI visible
+      // setUser(null); 
     }
   };
 
@@ -41,7 +37,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setToken(storedToken);
 
       if (storedToken) {
-        await refreshUser();
+        // Try to fetch latest data on app launch
+        try {
+          const userData = await fetchCurrentUser();
+          setUser(userData);
+        } catch (e) {
+          console.log("Could not refresh user on load");
+        }
       }
 
       setIsLoading(false);
@@ -53,7 +55,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const login = async (newToken: string) => {
     await SecureStore.setItemAsync('userToken', newToken);
     setToken(newToken);
-    await refreshUser();
+    
+    // Fetch user details immediately after login
+    const userData = await fetchCurrentUser();
+    setUser(userData);
   };
 
   const logout = async () => {
@@ -64,7 +69,15 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <AuthContext.Provider
-      value={{ token, user, isLoading, login, logout, refreshUser }}
+      value={{ 
+        token, 
+        user, 
+        setUser, // <--- PASS IT HERE so the rest of the app can use it
+        isLoading, 
+        login, 
+        logout, 
+        refreshUser 
+      }}
     >
       {children}
     </AuthContext.Provider>

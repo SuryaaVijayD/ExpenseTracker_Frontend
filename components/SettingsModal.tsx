@@ -28,7 +28,7 @@ export default function SettingsModal({ visible, onClose }: Props) {
             <DetailRow label="Notifications" value="Disabled" />
             <DetailRow label="Language" value="English" />
             <DetailRow label="Security" value="SHA-256" />
-            <DetailRow label="App Version" value="v1.0.0" />
+            <DetailRow label="App Version" value="v1.0.1" />
           </ScrollView>
         </View>
       </View>

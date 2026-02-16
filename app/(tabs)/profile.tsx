@@ -1,3 +1,5 @@
+import EditSalary from '@/components/EditSalary';
+import SettingsModal from '@/components/SettingsModal';
 import { useAuth } from '@/context/AuthContext';
 import { Feather, Ionicons, MaterialIcons } from '@expo/vector-icons';
 import React, { useState } from 'react';
@@ -10,7 +12,6 @@ import {
   View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import SettingsModal from '../../components/SettingsModal';
 
 /* ================= TYPES ================= */
 type MenuItemProps = {
@@ -20,7 +21,7 @@ type MenuItemProps = {
   highlight?: boolean;
 };
 
-/* ================= MENU ITEM ================= */
+/* ================= MENU ITEM COMPONENT ================= */
 const MenuItem = ({ icon, label, onPress, highlight }: MenuItemProps) => (
   <TouchableOpacity
     onPress={onPress}
@@ -40,7 +41,7 @@ const MenuItem = ({ icon, label, onPress, highlight }: MenuItemProps) => (
   </TouchableOpacity>
 );
 
-/* ================= DETAIL ROW ================= */
+/* ================= DETAIL ROW COMPONENT ================= */
 export const DetailRow = ({
   label,
   value,
@@ -56,20 +57,36 @@ export const DetailRow = ({
   </View>
 );
 
-/* ================= PROFILE SCREEN ================= */
+/* ================= MAIN PROFILE SCREEN ================= */
 export default function ProfileScreen() {
-  const { user, logout } = useAuth();
+  // 1. Get user AND setUser from AuthContext
+  const { user, logout, setUser } = useAuth(); 
+  
+  // Modal States
   const [openDetails, setOpenDetails] = useState(false);
   const [openHelp, setOpenHelp] = useState(false);
   const [openPrivacy, setOpenPrivacy] = useState(false);
   const [openSettings, setOpenSettings] = useState(false);
-  const [underDevModal, setUnderDevModal] = useState(false); // New state
-  const [underDevTitle, setUnderDevTitle] = useState(''); // Dynamic title
+  
+  // Salary Modal State
+  const [isSalaryModalVisible, setIsSalaryModalVisible] = useState(false);
 
-  // Handler to show under development modal
+  // Under Development Modal State
+  const [underDevModal, setUnderDevModal] = useState(false);
+  const [underDevTitle, setUnderDevTitle] = useState('');
+
+  // Helper to show "Under Development" modal
   const showUnderDevelopment = (title: string) => {
     setUnderDevTitle(title);
     setUnderDevModal(true);
+  };
+
+  // 2. Handler: Updates global state instantly after API success
+  const handleSalaryUpdateSuccess = (newSalary: number) => {
+    if (user && setUser) {
+      // Create a new user object with the updated salary
+      setUser({ ...user, salary: newSalary });
+    }
   };
 
   return (
@@ -105,11 +122,7 @@ export default function ProfileScreen() {
             {user?.username ?? 'User'}
           </Text>
 
-          <Text
-            className="text-sm text-text-muted mt-1"
-            numberOfLines={1}
-            ellipsizeMode="tail"
-          >
+          <Text className="text-sm text-text-muted mt-1">
             {user?.email ?? 'No data available'}
           </Text>
         </View>
@@ -120,6 +133,13 @@ export default function ProfileScreen() {
             icon={<Ionicons name="person-outline" size={22} color="#4B5563" />}
             label="Personal Details"
             onPress={() => setOpenDetails(true)}
+          />
+
+          {/* NEW UPDATE SALARY TAB */}
+          <MenuItem
+            icon={<MaterialIcons name="attach-money" size={22} color="#4B5563" />}
+            label="Update Salary"
+            onPress={() => setIsSalaryModalVisible(true)}
           />
 
           <MenuItem
@@ -155,6 +175,17 @@ export default function ProfileScreen() {
         </View>
       </ScrollView>
 
+      {/* ================= EDIT SALARY MODAL ================= */}
+      {/* 3. Pass handleSalaryUpdateSuccess to the modal */}
+      {user && (
+        <EditSalary 
+          visible={isSalaryModalVisible}
+          currentSalary={user.salary}
+          onClose={() => setIsSalaryModalVisible(false)}
+          onUpdateSuccess={handleSalaryUpdateSuccess} 
+        />
+      )}
+
       {/* ================= PERSONAL DETAILS MODAL ================= */}
       <Modal visible={openDetails} transparent animationType="slide">
         <View className="flex-1 bg-black/40 justify-end">
@@ -171,10 +202,18 @@ export default function ProfileScreen() {
             <DetailRow label="Username" value={user?.username} />
             <DetailRow label="Email" value={user?.email} />
             <DetailRow label="Phone" value={user?.phoneNumber} />
+            
+            {/* 4. Display salary directly from global state */}
             <DetailRow label="Salary" value={`₹${user?.salary}`} />
           </View>
         </View>
       </Modal>
+
+      {/* ================= SETTINGS MODAL ================= */}
+      <SettingsModal
+        visible={openSettings}
+        onClose={() => setOpenSettings(false)}
+      />
 
       {/* ================= HELP MODAL ================= */}
       <Modal visible={openHelp} transparent animationType="slide">
@@ -225,12 +264,6 @@ export default function ProfileScreen() {
         </View>
       </Modal>
 
-      {/* ================= SETTINGS MODAL ================= */}
-      <SettingsModal
-        visible={openSettings}
-        onClose={() => setOpenSettings(false)}
-      />
-
       {/* ================= UNDER DEVELOPMENT MODAL ================= */}
       <Modal visible={underDevModal} transparent animationType="slide">
         <View className="flex-1 bg-black/40 justify-end">
@@ -250,6 +283,7 @@ export default function ProfileScreen() {
           </View>
         </View>
       </Modal>
+
     </SafeAreaView>
   );
 }

@@ -30,3 +30,29 @@ export const fetchCurrentUser = async (): Promise<User> => {
 
   return res.json();
 };
+
+
+// Update salary code:
+export const updateSalary = async (newSalary: number): Promise<{ message: string; salary: number }> => {
+  const token = await SecureStore.getItemAsync('userToken');
+
+  if (!token) {
+    throw new Error('No token found');
+  }
+
+  const res = await fetch(`${BASE_URL}/user/salary`, {
+    method: 'PUT',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ salary: newSalary }),
+  });
+
+  if (!res.ok) {
+    const errorData = await res.json();
+    throw new Error(errorData.message || 'Failed to update salary');
+  }
+
+  return res.json();
+};
